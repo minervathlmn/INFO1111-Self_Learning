@@ -8,8 +8,6 @@ screen_width = 1280
 screen_height = 800
 screen = pygame.display.set_mode([screen_width, screen_height])
 pygame.display.set_caption('Pong!')
-pygame.mixer.music.load('pong_tetris_soundtrack.ogg')
-pygame.mixer.music.play(-1)
 
 FPS = 60
 clock = pygame.time.Clock()
@@ -18,9 +16,9 @@ font = pygame.font.SysFont('agencyfb', 20)
 winning_score = 1
 
 
-### sound effects
-add_score = pygame.mixer.Sound("pong_add_score.ogg")
-ball_hit = pygame.mixer.Sound("pong_ball_hit.ogg")
+### music
+pygame.mixer.music.load('pong_tetris_soundtrack.ogg')
+pygame.mixer.music.play(-1)
 
 
 ### colors
@@ -101,7 +99,7 @@ class Ball:
         self.y_speed *= random.choice((-1,1))
     
     def hit(self):
-        self.x_speed *= 1
+        self.x_speed *= -1
         self.y_speed *= 1
 
 
@@ -123,7 +121,7 @@ def collision(ball, left_paddle, right_paddle):
     if ball.x_speed < 0:
         if ball.y >= left_paddle.y and ball.y <= left_paddle.y + left_paddle.height:
             if ball.x <= left_paddle.x + left_paddle.width:
-                ball.x_speed *= -1
+                ball.hit()
 
                 half_paddle = left_paddle.y + left_paddle.height / 2
                 y_diff = half_paddle - ball.y
@@ -134,7 +132,7 @@ def collision(ball, left_paddle, right_paddle):
     else:
         if ball.y >= right_paddle.y and ball.y <= right_paddle.y + right_paddle.height:
             if ball.x + ball.radius >= right_paddle.x:
-                ball.x_speed *= -1
+                ball.hit()
                 
                 half_paddle = right_paddle.y + right_paddle.height / 2
                 y_diff = half_paddle - ball.y
@@ -182,6 +180,7 @@ def main():
         if ball.x < 0:
             right_score += 1
             ball.reset()
+
         elif ball.x > screen_width:
             left_score += 1
             ball.reset()
