@@ -21,7 +21,7 @@ black = (0, 0, 0)
 green = (0, 255, 0)
 
 
-### display objects
+### DISPLAYING SHAPES AND OBJECTS
 def display(screen, left_paddle, right_paddle, ball):
     screen.fill(black)
 
@@ -34,7 +34,7 @@ def display(screen, left_paddle, right_paddle, ball):
     pygame.display.update()
 
 
-### ball & paddle collide
+### RESPONDING TO EVENTS : ball & paddle collide
 def collision(ball, left_paddle, right_paddle):
     if ball.x_speed < 0:
         if ball.y >= left_paddle.y and ball.y <= left_paddle.y + left_paddle.height:
@@ -73,7 +73,7 @@ def collision(ball, left_paddle, right_paddle):
                 # pygame.mixer.Sound.stop(ball_hit)
 
 
-### animate paddle
+### RESPONDING TO USER INPUT : animate paddle
 def paddle_movement(keys, left_paddle, right_paddle):
     if keys[pygame.K_w]:
         left_paddle.moveUp()
@@ -96,30 +96,22 @@ def main():
 
     running = True
     while running:
+        ### DISPLAYING SHAPES AND OBJECTS
         display(screen, left_paddle, right_paddle, ball)
 
+        ### RESPONDING TO EVENTS
         for event in pygame.event.get():            
             if event.type == pygame.QUIT:
                 running = False
                 break
-
+        
+        collision(ball, left_paddle, right_paddle)
+        
+        ### RESPONDING TO USER INPUT
         keys = pygame.key.get_pressed()
         paddle_movement(keys, left_paddle, right_paddle)
 
-        ball.move()
-        collision(ball, left_paddle, right_paddle)
-
-        if ball.x < 0:
-            right_score += 1
-            ball.reset()
-            # add time delay before start again
-            # time.delay(1)
-        elif ball.x > screen_width:
-            left_score += 1
-            ball.reset()
-            # add time delay before start again
-            # time.delay(1)
-
+        ### DISPLAYING TEXT
         left_paddle.scoring("left : ", left_score, 100, 20, green)
         right_paddle.scoring("right : ", right_score, screen_width-100, 20, green)
 
