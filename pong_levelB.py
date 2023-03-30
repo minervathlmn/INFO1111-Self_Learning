@@ -27,7 +27,7 @@ black = (0, 0, 0)
 green = (0, 255, 0)
 
 
-### paddles
+### DRAWING SHAPES & BUTTONS : paddles
 paddle_width = 10
 paddle_height = 150
 
@@ -66,7 +66,7 @@ class Paddle:
         screen.blit(text, textRect)
 
 
-### ball
+### DRAWING SHAPES & SPRITES : ball
 ball_radius = 10
 
 class Ball:
@@ -103,7 +103,7 @@ class Ball:
         self.y_speed *= 1
 
 
-### display objects
+### DISPLAYING OBJECTS ON SCREEN
 def display(screen, left_paddle, right_paddle, ball):
     screen.fill(black)
 
@@ -116,7 +116,7 @@ def display(screen, left_paddle, right_paddle, ball):
     pygame.display.update()
 
 
-### ball & paddle collide
+### RESPONDING TO EVENT : ball & paddle collide
 def collision(ball, left_paddle, right_paddle):
     if ball.x_speed < 0:
         if ball.y >= left_paddle.y and ball.y <= left_paddle.y + left_paddle.height:
@@ -141,7 +141,7 @@ def collision(ball, left_paddle, right_paddle):
                 ball.y_speed = -1 * y_speed
 
 
-### animate paddle
+### RESPONDING TO USER INPUT : animate paddle
 def paddle_movement(keys, left_paddle, right_paddle):
     if keys[pygame.K_w]:
         left_paddle.moveUp()
