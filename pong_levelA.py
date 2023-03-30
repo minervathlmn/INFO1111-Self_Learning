@@ -21,7 +21,16 @@ black = (0, 0, 0)
 green = (0, 255, 0)
 
 
-### DISPLAYING SHAPES AND OBJECTS
+### DRAWING SHAPES
+#   paddles
+paddle_width = 10
+paddle_height = 150
+
+#   ball
+ball_radius = 10
+
+
+### DISPLAYING OBJECTS ON SCREEN
 def display(screen, left_paddle, right_paddle, ball):
     screen.fill(black)
 
@@ -34,12 +43,13 @@ def display(screen, left_paddle, right_paddle, ball):
     pygame.display.update()
 
 
-### RESPONDING TO EVENTS : ball & paddle collide
+### RESPONDING TO EVENT
+#   ball & paddle collide
 def collision(ball, left_paddle, right_paddle):
     if ball.x_speed < 0:
         if ball.y >= left_paddle.y and ball.y <= left_paddle.y + left_paddle.height:
             if ball.x <= left_paddle.x + left_paddle.width:
-                ball.x_speed *= -1
+                ball.hit()
 
                 half_paddle = left_paddle.y + left_paddle.height / 2
                 y_diff = half_paddle - ball.y
@@ -50,7 +60,7 @@ def collision(ball, left_paddle, right_paddle):
     else:
         if ball.y >= right_paddle.y and ball.y <= right_paddle.y + right_paddle.height:
             if ball.x + ball.radius >= right_paddle.x:
-                ball.x_speed *= -1
+                ball.hit()
                 
                 half_paddle = right_paddle.y + right_paddle.height / 2
                 y_diff = half_paddle - ball.y
@@ -59,7 +69,8 @@ def collision(ball, left_paddle, right_paddle):
                 ball.y_speed = -1 * y_speed
 
 
-### RESPONDING TO USER INPUT : animate paddle
+### RESPONDING TO USER INPUT
+#   animate paddle
 def paddle_movement(keys, left_paddle, right_paddle):
     if keys[pygame.K_w]:
         left_paddle.moveUp()
@@ -82,22 +93,27 @@ def main():
 
     running = True
     while running:
-        ### DISPLAYING SHAPES AND OBJECTS
         display(screen, left_paddle, right_paddle, ball)
 
-        ### RESPONDING TO EVENTS
         for event in pygame.event.get():            
             if event.type == pygame.QUIT:
                 running = False
                 break
-        
-        collision(ball, left_paddle, right_paddle)
-        
-        ### RESPONDING TO USER INPUT
+
         keys = pygame.key.get_pressed()
         paddle_movement(keys, left_paddle, right_paddle)
 
-        ### DISPLAYING TEXT
+        ball.move()
+        collision(ball, left_paddle, right_paddle)
+
+        if ball.x < 0:
+            right_score += 1
+            ball.reset()
+
+        elif ball.x > screen_width:
+            left_score += 1
+            ball.reset()
+
         left_paddle.scoring("left : ", left_score, 100, 20, green)
         right_paddle.scoring("right : ", right_score, screen_width-100, 20, green)
 
