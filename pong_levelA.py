@@ -47,13 +47,6 @@ def collision(ball, left_paddle, right_paddle):
                 y_speed = y_diff / reduction
                 ball.y_speed = -1 * y_speed
 
-                # count = 0
-                # while count < 1: 
-                # pygame.mixer.Sound.play(ball_hit)
-                # pygame.mixer.Sound.stop()
-                #     count += 1
-                # pygame.mixer.Sound.pause(ball_hit)
-
     else:
         if ball.y >= right_paddle.y and ball.y <= right_paddle.y + right_paddle.height:
             if ball.x + ball.radius >= right_paddle.x:
@@ -64,13 +57,6 @@ def collision(ball, left_paddle, right_paddle):
                 reduction = (right_paddle.height / 2) / ball.ball_speed
                 y_speed = y_diff / reduction
                 ball.y_speed = -1 * y_speed
-
-                # count = 0
-                # while count < 1: 
-                # pygame.mixer.Sound.play(ball_hit)
-                # pygame.mixer.Sound.stop()
-                #     count += 1
-                # pygame.mixer.Sound.stop(ball_hit)
 
 
 ### RESPONDING TO USER INPUT : animate paddle
